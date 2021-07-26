@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+
+class IceCreamConstants {
+  static final List<Color> scoopColors = [
+    Colors.pink.shade50,
+    Colors.pink.shade100,
+    Colors.pink.shade200,
+    Colors.pink.shade300,
+    Colors.red.shade50,
+    Colors.red.shade100,
+    Colors.red.shade200,
+    Colors.red.shade300,
+    Colors.orange.shade50,
+    Colors.orange.shade100,
+    Colors.orange.shade200,
+    Colors.orange.shade300,
+    Colors.yellow.shade50,
+    Colors.yellow.shade100,
+    Colors.yellow.shade200,
+    Colors.yellow.shade300,
+    Colors.green.shade50,
+    Colors.green.shade100,
+    Colors.green.shade200,
+    Colors.green.shade300,
+    Colors.lightBlue.shade50,
+    Colors.lightBlue.shade100,
+    Colors.lightBlue.shade200,
+    Colors.lightBlue.shade300,
+    Colors.blue.shade50,
+    Colors.blue.shade100,
+    Colors.blue.shade200,
+    Colors.blue.shade300,
+    Colors.indigo.shade50,
+    Colors.indigo.shade100,
+    Colors.indigo.shade200,
+    Colors.indigo.shade300,
+    Colors.purple.shade50,
+    Colors.purple.shade100,
+    Colors.purple.shade200,
+    Colors.purple.shade300,
+  ];
+
+  static final List<Color> syrupColors = [
+    Colors.brown.shade300,
+    Colors.brown.shade400,
+    Colors.brown.shade500,
+    Colors.brown.shade600,
+    Colors.brown.shade700,
+    Colors.brown.shade800,
+  ];
+}

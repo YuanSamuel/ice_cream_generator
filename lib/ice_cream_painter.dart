@@ -1,16 +1,29 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:ice_cream_generator/ice_cream_constants.dart';
 
 class IceCreamPainter extends CustomPainter {
+  late final int scoopType;
+  late final int coneType;
+
+  IceCreamPainter({required this.scoopType, required this.coneType});
+
   @override
   void paint(Canvas canvas, Size size) {
     Offset center = Offset(size.width / 2, size.height / 2);
+    print('paint');
 
-    drawCup(canvas, center);
-    // drawCone(canvas, center);
-    // drawScoop(canvas, center);
-    drawSwirl(canvas, center);
+    if (coneType == 0) {
+      drawCone(canvas, center);
+    } else {
+      drawCup(canvas, center);
+    }
+    if (scoopType == 0) {
+      drawScoop(canvas, center);
+    } else {
+      drawSwirl(canvas, center);
+    }
   }
 
   @override
@@ -20,21 +33,68 @@ class IceCreamPainter extends CustomPainter {
 
   void drawScoop(Canvas canvas, Offset center) {
     Paint border = Paint()
-      ..color = Colors.pink.shade100
+      ..color = Colors.black
       ..strokeWidth = 5
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    Paint fill = Paint()
-      ..color = Colors.pink.shade100
-      ..style = PaintingStyle.fill;
+    Paint fill = Paint()..style = PaintingStyle.fill;
 
     Rect bottom = Rect.fromCenter(center: center, width: 200, height: 100);
     Rect top = Rect.fromCenter(center: center, width: 200, height: 200);
 
-    canvas.drawArc(top, pi, pi, true, border);
-    canvas.drawArc(bottom, pi, -pi, true, fill);
-    canvas.drawArc(top, pi, pi, true, fill);
+    for (int i = 0; i < Random().nextInt(3) + 1; i++) {
+      fill
+        ..color = IceCreamConstants.scoopColors[
+            Random().nextInt(IceCreamConstants.scoopColors.length)];
+      canvas.drawArc(bottom, pi, -pi, true, border);
+      canvas.drawArc(top, pi, pi, true, border);
+      canvas.drawArc(bottom, pi, -pi, true, fill);
+      canvas.drawArc(top, pi, pi, true, fill);
+      bottom = bottom.translate(0, -60);
+      top = top.translate(0, -60);
+    }
+
+    int scoopToppings = Random().nextInt(2);
+    if (scoopToppings == 1) {
+      drawSyrup(canvas, top);
+    }
+  }
+
+  void drawSyrup(Canvas canvas, Rect top) {
+    Path syrup1 = Path()
+      ..moveTo(top.left + 20, top.top + 100)
+      ..quadraticBezierTo(
+          top.left + 30, top.top + 200, top.left + 35, top.top + 84);
+    Path syrup2 = Path()
+      ..moveTo(top.left + 55, top.top + 71)
+      ..quadraticBezierTo(
+          top.left + 65, top.top + 260, top.left + 70, top.top + 65);
+    Path syrup3 = Path()
+      ..moveTo(top.left + 90, top.top + 60)
+      ..quadraticBezierTo(
+          top.left + 100, top.top + 300, top.left + 105, top.top + 60);
+    Path syrup4 = Path()
+      ..moveTo(top.left + 125, top.top + 65)
+      ..quadraticBezierTo(
+          top.left + 130, top.top + 260, top.left + 140, top.top + 71);
+    Path syrup5 = Path()
+      ..moveTo(top.left + 160, top.top + 80)
+      ..quadraticBezierTo(
+          top.left + 170, top.top + 200, top.left + 175, top.top + 93);
+
+    Paint syrupPaint = Paint()
+      ..color = IceCreamConstants
+          .syrupColors[Random().nextInt(IceCreamConstants.syrupColors.length)]
+      ..strokeWidth = 5
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawPath(syrup1, syrupPaint);
+    canvas.drawPath(syrup2, syrupPaint);
+    canvas.drawPath(syrup3, syrupPaint);
+    canvas.drawPath(syrup4, syrupPaint);
+    canvas.drawPath(syrup5, syrupPaint);
   }
 
   void drawCone(Canvas canvas, Offset center) {
@@ -113,8 +173,13 @@ class IceCreamPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    Paint blueFill = Paint()
-      ..color = Colors.blue
+    Paint scoopFill = Paint()
+      ..color = IceCreamConstants
+          .scoopColors[Random().nextInt(IceCreamConstants.scoopColors.length)]
+      ..style = PaintingStyle.fill;
+
+    Paint whiteFill = Paint()
+      ..color = ThemeData.light().scaffoldBackgroundColor
       ..style = PaintingStyle.fill;
 
     Rect top = Rect.fromCenter(center: center, width: 200, height: 100);
@@ -133,8 +198,52 @@ class IceCreamPainter extends CustomPainter {
     // ..lineTo(center.dx + 100, center.dy)
     // ..close();
 
-    canvas.drawPath(path, blueFill);
+    canvas.drawPath(path, scoopFill);
+
+    int cupType = Random().nextInt(2);
+    if (cupType == 1) {
+      drawDots(canvas, center);
+    }
+
+    Rect rightClear = Rect.fromLTRB(
+        center.dx - 140, center.dy, center.dx - 102, center.dy + 200);
+    Rect leftClear = Rect.fromLTRB(
+        center.dx + 102, center.dy, center.dx + 140, center.dy + 200);
+    Rect bottomClearRect = Rect.fromCenter(
+        center: Offset(center.dx, center.dy + 126), width: 205, height: 100);
+    Path bottomClear = Path()
+      ..arcTo(bottomClearRect, pi, -pi, false)
+      ..lineTo(center.dx + 102, center.dy + 200)
+      ..lineTo(center.dx - 102, center.dy + 200)
+      ..lineTo(center.dx - 102, center.dy + 125);
+
+    canvas.drawRect(rightClear, whiteFill);
+    canvas.drawRect(leftClear, whiteFill);
+    canvas.drawPath(bottomClear, whiteFill);
+
     canvas.drawPath(path, blackBorder);
+  }
+
+  void drawDots(Canvas canvas, Offset center) {
+    Paint fill = Paint()
+      ..color = IceCreamConstants
+          .scoopColors[Random().nextInt(IceCreamConstants.scoopColors.length)]
+      ..style = PaintingStyle.fill;
+
+    int radius = Random().nextInt(11) + 5;
+    int startX = -Random().nextInt(25) - 90;
+    int startY = Random().nextInt(20) + 15;
+
+    bool alt = false;
+    for (int x = startX; x < 125; x += (radius * 2.5).round()) {
+      for (int y = startY + (alt ? (radius * 1.1).round() : 0);
+          y < 175;
+          y += (radius * 2.5).round()) {
+        canvas.drawCircle(
+            Offset(center.dx + x, center.dy + y), radius.toDouble(), fill);
+      }
+      alt = !alt;
+    }
   }
 
   void drawSwirl(Canvas canvas, Offset center) {
@@ -144,18 +253,11 @@ class IceCreamPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    Paint border = Paint()
-      ..color = Colors.pink.shade100
-      ..strokeWidth = 5
-      ..strokeCap = StrokeCap.round
-      ..style = PaintingStyle.stroke;
-
     Paint fill = Paint()
-      ..color = Colors.pink.shade100
+      ..color = IceCreamConstants
+          .scoopColors[Random().nextInt(IceCreamConstants.scoopColors.length)]
       ..style = PaintingStyle.fill;
 
-    Rect swirl1 = Rect.fromCenter(
-        center: Offset(center.dx + 90, center.dy - 20), width: 40, height: 60);
     Rect swirl2 = Rect.fromCenter(
         center: Offset(center.dx - 90, center.dy - 30), width: 30, height: 50);
     Rect swirl3 = Rect.fromCenter(
@@ -172,15 +274,6 @@ class IceCreamPainter extends CustomPainter {
         height: 90);
 
     Rect bottom = Rect.fromCenter(center: center, width: 200, height: 100);
-
-    // canvas.drawArc(bottom, 0, 2 * pi, false, fill);
-    Path path = Path()
-      ..quadraticBezierTo(
-          center.dx + 50, center.dy - 25, center.dx - 100, center.dy)
-      ..arcTo(swirl2, pi / 2, pi, true)
-      ..quadraticBezierTo(
-          center.dx + 50, center.dy - 70, center.dx + 80, center.dy - 93)
-      ..arcTo(swirl3, -pi / 2, pi, false);
 
     Path path1 = Path()
       ..arcTo(bottom, pi, -pi - pi / 5, false)
@@ -204,16 +297,10 @@ class IceCreamPainter extends CustomPainter {
           center.dx + 50, center.dy - 70, center.dx - 84, center.dy - 59);
 
     Path path4 = Path()
-    ..arcTo(swirl6, -pi / 6, - pi / 3, false)
-    ..arcTo(swirl7, -2 * pi / 3, 2 * pi / 3, false)
-    ..quadraticBezierTo(center.dx + 30, center.dy - 110, center.dx - 68, center.dy - 104);
-
-    // canvas.drawArc(swirl4, -pi / 2, -pi, false, border);
-    // canvas.drawLine(Offset(center.dx - 75, center.dy - 100),
-    //     Offset(center.dx + 70, center.dy - 131), border);
-    // canvas.drawArc(swirl5, -pi / 2, pi, false, border);
-    // canvas.drawArc(swirl6, -pi / 2, pi / 3, false, border);
-    // canvas.drawArc(swirl7, -2 * pi / 3, 2 * pi / 3, false, border);
+      ..arcTo(swirl6, -pi / 6, -pi / 3, false)
+      ..arcTo(swirl7, -2 * pi / 3, 2 * pi / 3, false)
+      ..quadraticBezierTo(
+          center.dx + 30, center.dy - 110, center.dx - 68, center.dy - 104);
 
     canvas.drawPath(path1, blackBorder);
     canvas.drawPath(path1, fill);
