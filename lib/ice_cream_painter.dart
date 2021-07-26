@@ -1,25 +1,25 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:ice_cream_generator/ice_cream_constants.dart';
+import 'package:ice_cream_generator/models/ConeType.dart';
+import 'package:ice_cream_generator/models/IceCream.dart';
+import 'package:ice_cream_generator/models/ScoopType.dart';
 
 class IceCreamPainter extends CustomPainter {
-  late final int scoopType;
-  late final int coneType;
+  late final IceCream iceCream;
 
-  IceCreamPainter({required this.scoopType, required this.coneType});
+  IceCreamPainter({required this.iceCream});
 
   @override
   void paint(Canvas canvas, Size size) {
     Offset center = Offset(size.width / 2, size.height / 2);
-    print('paint');
 
-    if (coneType == 0) {
+    if (iceCream.coneType == ConeType.Cone) {
       drawCone(canvas, center);
     } else {
       drawCup(canvas, center);
     }
-    if (scoopType == 0) {
+    if (iceCream.scoopType == ScoopType.Scoop) {
       drawScoop(canvas, center);
     } else {
       drawSwirl(canvas, center);
@@ -43,10 +43,8 @@ class IceCreamPainter extends CustomPainter {
     Rect bottom = Rect.fromCenter(center: center, width: 200, height: 100);
     Rect top = Rect.fromCenter(center: center, width: 200, height: 200);
 
-    for (int i = 0; i < Random().nextInt(3) + 1; i++) {
-      fill
-        ..color = IceCreamConstants.scoopColors[
-            Random().nextInt(IceCreamConstants.scoopColors.length)];
+    for (int i = 0; i < iceCream.numScoops; i++) {
+      fill..color = iceCream.scoopColors[i];
       canvas.drawArc(bottom, pi, -pi, true, border);
       canvas.drawArc(top, pi, pi, true, border);
       canvas.drawArc(bottom, pi, -pi, true, fill);
@@ -55,8 +53,7 @@ class IceCreamPainter extends CustomPainter {
       top = top.translate(0, -60);
     }
 
-    int scoopToppings = Random().nextInt(2);
-    if (scoopToppings == 1) {
+    if (iceCream.hasSyrup) {
       drawSyrup(canvas, top);
     }
   }
@@ -84,8 +81,7 @@ class IceCreamPainter extends CustomPainter {
           top.left + 170, top.top + 200, top.left + 175, top.top + 93);
 
     Paint syrupPaint = Paint()
-      ..color = IceCreamConstants
-          .syrupColors[Random().nextInt(IceCreamConstants.syrupColors.length)]
+      ..color = iceCream.syrupColor
       ..strokeWidth = 5
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
@@ -173,9 +169,8 @@ class IceCreamPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    Paint scoopFill = Paint()
-      ..color = IceCreamConstants
-          .scoopColors[Random().nextInt(IceCreamConstants.scoopColors.length)]
+    Paint cupFill = Paint()
+      ..color = iceCream.cupColor
       ..style = PaintingStyle.fill;
 
     Paint whiteFill = Paint()
@@ -198,10 +193,9 @@ class IceCreamPainter extends CustomPainter {
     // ..lineTo(center.dx + 100, center.dy)
     // ..close();
 
-    canvas.drawPath(path, scoopFill);
+    canvas.drawPath(path, cupFill);
 
-    int cupType = Random().nextInt(2);
-    if (cupType == 1) {
+    if (iceCream.polkaDots.hasDots) {
       drawDots(canvas, center);
     }
 
@@ -226,13 +220,12 @@ class IceCreamPainter extends CustomPainter {
 
   void drawDots(Canvas canvas, Offset center) {
     Paint fill = Paint()
-      ..color = IceCreamConstants
-          .scoopColors[Random().nextInt(IceCreamConstants.scoopColors.length)]
+      ..color = iceCream.polkaDots.color
       ..style = PaintingStyle.fill;
 
-    int radius = Random().nextInt(11) + 5;
-    int startX = -Random().nextInt(25) - 90;
-    int startY = Random().nextInt(20) + 15;
+    int radius = iceCream.polkaDots.radius;
+    int startX = iceCream.polkaDots.startX;
+    int startY = iceCream.polkaDots.startY;
 
     bool alt = false;
     for (int x = startX; x < 125; x += (radius * 2.5).round()) {
@@ -254,8 +247,7 @@ class IceCreamPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     Paint fill = Paint()
-      ..color = IceCreamConstants
-          .scoopColors[Random().nextInt(IceCreamConstants.scoopColors.length)]
+      ..color = iceCream.scoopColors[0]
       ..style = PaintingStyle.fill;
 
     Rect swirl2 = Rect.fromCenter(

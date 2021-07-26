@@ -1,0 +1,1 @@
+enum ScoopType { Scoop, Swirl }

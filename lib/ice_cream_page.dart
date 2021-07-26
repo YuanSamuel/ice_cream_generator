@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ice_cream_generator/ice_cream_painter.dart';
+import 'package:ice_cream_generator/models/IceCream.dart';
 
 class IceCreamPage extends StatefulWidget {
   const IceCreamPage({Key? key}) : super(key: key);
@@ -11,13 +12,11 @@ class IceCreamPage extends StatefulWidget {
 }
 
 class _IceCreamPageState extends State<IceCreamPage> {
-  late int _scoopType;
-  late int _coneType;
+  late IceCream _iceCream;
 
   @override
   void initState() {
-    _scoopType = Random().nextInt(2);
-    _coneType = Random().nextInt(2);
+    _iceCream = new IceCream();
     super.initState();
   }
 
@@ -29,8 +28,7 @@ class _IceCreamPageState extends State<IceCreamPage> {
           Center(
             child: CustomPaint(
               painter: IceCreamPainter(
-                scoopType: _scoopType,
-                coneType: _coneType,
+                iceCream: _iceCream,
               ),
               child: Container(),
             ),
@@ -46,8 +44,7 @@ class _IceCreamPageState extends State<IceCreamPage> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        _scoopType = Random().nextInt(2);
-                        _coneType = Random().nextInt(2);
+                        _iceCream = new IceCream();
                       });
                     },
                     child: Text(

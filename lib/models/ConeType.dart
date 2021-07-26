@@ -1,0 +1,1 @@
+enum ConeType { Cone, Cup }
