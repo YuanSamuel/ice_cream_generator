@@ -10,7 +10,7 @@ class Stripes {
 
   Stripes() {
     Random random = Random();
-    int length = random.nextInt(5) + 1;
+    int length = random.nextInt(2) + 1;
     _colors = <Color>[];
     for (int i = 0; i < length; i++) {
       _colors.add(IceCreamConstants

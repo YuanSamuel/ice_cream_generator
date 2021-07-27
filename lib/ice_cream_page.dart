@@ -39,16 +39,28 @@ class _IceCreamPageState extends State<IceCreamPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(
+                  OutlinedButton(
                     onPressed: () {
                       setState(() {
                         _iceCream = new IceCream();
                       });
                     },
-                    child: Text(
-                      'Generate Ice Cream!',
-                      style: TextStyle(fontSize: 16.0),
-                      textAlign: TextAlign.center,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.icecream,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Generate Ice Cream!',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ],

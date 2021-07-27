@@ -19,7 +19,7 @@ class PolkaDots {
 
     _radius = Random().nextInt(11) + 5;
     _startX = -Random().nextInt(25) - 90;
-    _startY = Random().nextInt(20) + 15;
+    _startY = Random().nextInt(20) + 10;
     _color = IceCreamConstants
         .scoopColors[random.nextInt(IceCreamConstants.scoopColors.length)];
   }

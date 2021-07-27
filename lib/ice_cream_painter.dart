@@ -5,6 +5,7 @@ import 'package:ice_cream_generator/models/ConeType.dart';
 import 'package:ice_cream_generator/models/CupType.dart';
 import 'package:ice_cream_generator/models/IceCream.dart';
 import 'package:ice_cream_generator/models/ScoopType.dart';
+import 'package:ice_cream_generator/models/ToppingsType.dart';
 
 class IceCreamPainter extends CustomPainter {
   late final IceCream iceCream;
@@ -54,9 +55,28 @@ class IceCreamPainter extends CustomPainter {
       top = top.translate(0, -60);
     }
 
-    if (iceCream.hasSyrup) {
+    if (iceCream.toppingsType == ToppingsType.Syrup) {
       drawSyrup(canvas, top);
+    } else if (iceCream.toppingsType == ToppingsType.Sprinkles) {
+      drawSprinkles(canvas, top);
     }
+
+    Paint clearFill = Paint()
+      ..color = ThemeData.light().scaffoldBackgroundColor
+      ..style = PaintingStyle.fill;
+
+    top = top.translate(0, 60);
+    double cx = (top.right + top.left) / 2;
+    double cy = (top.top + top.bottom) / 2;
+    Rect topClearRect =
+        Rect.fromCenter(center: Offset(cx, cy), width: 206, height: 206);
+    Path topClear = Path()
+      ..arcTo(topClearRect, pi, pi, false)
+      ..lineTo(cx + 102, cy - 170)
+      ..lineTo(cx - 102, cy - 170)
+      ..lineTo(cx - 104, cy);
+
+    canvas.drawPath(topClear, clearFill);
   }
 
   void drawSyrup(Canvas canvas, Rect top) {
@@ -92,6 +112,27 @@ class IceCreamPainter extends CustomPainter {
     canvas.drawPath(syrup3, syrupPaint);
     canvas.drawPath(syrup4, syrupPaint);
     canvas.drawPath(syrup5, syrupPaint);
+  }
+
+  void drawSprinkles(Canvas canvas, Rect top) {
+    Paint paint = Paint()..style = PaintingStyle.fill;
+
+    double cx = (top.left + top.right) / 2;
+    double cy = (top.top + top.bottom) / 2;
+
+    //canvas.drawRect(top, paint);
+    canvas.save();
+    canvas.translate(cx, cy);
+    for (int i = 0; i < iceCream.sprinkles.length; i++) {
+      canvas.rotate(iceCream.sprinkles[i].rotation);
+      paint..color = iceCream.sprinkles[i].color;
+      canvas.drawRRect(iceCream.sprinkles[i].shape, paint);
+    }
+
+    canvas.translate(-cx, -cy);
+    canvas.restore();
+    // canvas.drawRect(Rect.fromLTRB(10, 10, 100, 100), paint);
+    // canvas.drawRRect(rect, paint);
   }
 
   void drawCone(Canvas canvas, Offset center) {

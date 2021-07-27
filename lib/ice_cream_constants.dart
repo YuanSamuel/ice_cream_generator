@@ -123,4 +123,13 @@ class IceCreamConstants {
     Colors.brown.shade700,
     Colors.brown.shade800,
   ];
+
+  static final List<Color> sprinkleColors = [
+    Colors.white,
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.blue,
+    Colors.indigo
+  ];
 }
