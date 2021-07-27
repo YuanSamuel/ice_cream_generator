@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ice_cream_generator/models/ConeType.dart';
+import 'package:ice_cream_generator/models/CupType.dart';
 import 'package:ice_cream_generator/models/IceCream.dart';
 import 'package:ice_cream_generator/models/ScoopType.dart';
 
@@ -195,8 +196,10 @@ class IceCreamPainter extends CustomPainter {
 
     canvas.drawPath(path, cupFill);
 
-    if (iceCream.polkaDots.hasDots) {
+    if (iceCream.cupType == CupType.Dots) {
       drawDots(canvas, center);
+    } else if (iceCream.cupType == CupType.Stripes) {
+      drawStripes(canvas, center);
     }
 
     Rect rightClear = Rect.fromLTRB(
@@ -236,6 +239,24 @@ class IceCreamPainter extends CustomPainter {
             Offset(center.dx + x, center.dy + y), radius.toDouble(), fill);
       }
       alt = !alt;
+    }
+  }
+
+  void drawStripes(Canvas canvas, Offset center) {
+    Paint fill = Paint()..style = PaintingStyle.fill;
+
+    int index = 0;
+    for (int x = -90; x <= 70; x += 40) {
+      fill
+        ..color =
+            iceCream.stripes.colors[index % iceCream.stripes.colors.length];
+
+      Rect stripe = Rect.fromLTRB(center.dx + x.toDouble(), center.dy,
+          center.dx + x.toDouble() + 20, center.dy + 200);
+
+      canvas.drawRect(stripe, fill);
+
+      index++;
     }
   }
 

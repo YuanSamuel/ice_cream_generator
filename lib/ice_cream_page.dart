@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:ice_cream_generator/ice_cream_painter.dart';
 import 'package:ice_cream_generator/models/IceCream.dart';
