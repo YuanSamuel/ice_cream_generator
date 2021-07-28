@@ -231,10 +231,6 @@ class IceCreamPainter extends CustomPainter {
       ..lineTo(center.dx - 100, center.dy)
       ..close();
 
-    // ..lineTo(center.dx, center.dy + 300)
-    // ..lineTo(center.dx + 100, center.dy)
-    // ..close();
-
     canvas.drawPath(path, cupFill);
 
     if (iceCream.cupType == CupType.Dots) {

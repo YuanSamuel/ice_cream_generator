@@ -32,7 +32,7 @@ class _IceCreamPageState extends State<IceCreamPage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 10.0),
+            padding: EdgeInsets.only(bottom: 30.0),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Row(
@@ -49,6 +49,7 @@ class _IceCreamPageState extends State<IceCreamPage> {
                       children: [
                         Icon(
                           Icons.icecream,
+                          size: 28.0,
                         ),
                         SizedBox(
                           width: 10,
@@ -56,7 +57,7 @@ class _IceCreamPageState extends State<IceCreamPage> {
                         Text(
                           'Generate Ice Cream!',
                           style: TextStyle(
-                            fontSize: 16.0,
+                            fontSize: 20.0,
                           ),
                           textAlign: TextAlign.center,
                         ),
