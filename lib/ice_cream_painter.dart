@@ -72,8 +72,8 @@ class IceCreamPainter extends CustomPainter {
         Rect.fromCenter(center: Offset(cx, cy), width: 206, height: 206);
     Path topClear = Path()
       ..arcTo(topClearRect, pi, pi, false)
-      ..lineTo(cx + 102, cy - 170)
-      ..lineTo(cx - 102, cy - 170)
+      ..lineTo(cx + 102, cy - 180)
+      ..lineTo(cx - 102, cy - 180)
       ..lineTo(cx - 104, cy);
 
     canvas.drawPath(topClear, clearFill);
